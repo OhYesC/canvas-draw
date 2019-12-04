@@ -92,7 +92,7 @@ export default {
     },
     upload() {
       const image = this.draw.getPNGImage();
-      const blob = this.draw.dataURLtoBlob(image);
+      const file = this.draw.dataURLtoFile(image);
 
       const url = '';
       const successCallback = (response) => {
@@ -101,7 +101,7 @@ export default {
       const failureCallback = (error) => {
         console.log(error);
       };
-      this.draw.upload(blob, url, successCallback, failureCallback);
+      this.draw.upload(file, url, successCallback, failureCallback);
     },
   },
 };

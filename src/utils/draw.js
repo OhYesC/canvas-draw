@@ -184,7 +184,7 @@ Draw.prototype = {
     const url = image.replace('image/png', 'image/octet-stream;Content-Disposition:attachment;filename=test.png');
     window.location.href = url;
   },
-  dataURLtoBlob(dataURL) {
+  dataURLtoFile(dataURL) {
     const arr = dataURL.split(',');
     const mime = arr[0].match(/:(.*?);/)[1];
     const bStr = atob(arr[1]);
@@ -193,7 +193,7 @@ Draw.prototype = {
     while (n--) {
       u8arr[n] = bStr.charCodeAt(n);
     }
-    return new Blob([u8arr], { type: mime });
+    return new File([u8arr], 'test.png', { type: mime });
   },
   clear() {
     let width;
@@ -210,13 +210,14 @@ Draw.prototype = {
     }
     this.context.clearRect(0, 0, width, height);
   },
-  upload(blob, url, success, failure) {
+  upload(file, url, success, failure) {
     const formData = new FormData();
     const xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
-    formData.append('image', blob, 'sign');
+    formData.append('file', file);
 
     xhr.open('POST', url, true);
+    xhr.setRequestHeader('X-XIAOHE-APP-Token', '7bd8d8e125044d4fbfad42b80a827e6e');
     xhr.onload = () => {
       if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
         success(xhr.responseText);

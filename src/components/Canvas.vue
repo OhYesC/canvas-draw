@@ -4,6 +4,7 @@
       <span>{{msg}}</span>
       <a @touchstart="clear" @mousedown="clear">清屏</a>
       <a @touchstart="download" @mousedown="download">下载</a>
+      <a @touchstart="upload" @mousedown="upload">上传</a>
       <select v-model="degree">
         <option v-for="item in scope" :value="item.value">{{item.title}}</option>
       </select>
@@ -95,16 +96,15 @@ export default {
     },
     upload() {
       const image = this.draw.getPNGImage();
-      const blob = this.draw.dataURLtoBlob(image);
-
-      const url = '';
+      const file = this.draw.dataURLtoFile(image);
+      const url = 'http://localhost:8081/app/salesman/uploadSignFile';
       const successCallback = (response) => {
         console.log(response);
       };
       const failureCallback = (error) => {
         console.log(error);
       };
-      this.draw.upload(blob, url, successCallback, failureCallback);
+      this.draw.upload(file, url, successCallback, failureCallback);
     },
   },
 };
